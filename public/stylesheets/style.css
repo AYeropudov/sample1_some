@@ -11,3 +11,40 @@ canvas {
   height: 600px;
   border: 5px solid black;
 }
+
+table {
+  width: 900px;
+  border: 1px dashed black;
+}
+
+td {
+  width: 296px;
+  border: 1px solid darkred;
+}
+table.playersActions {
+  width: 100%;
+  border: none;
+  padding: 3px;
+}
+
+table.playersActions > td {
+  width: 30%;
+  border: 1px solid orangered;
+  margin: 2px;
+}
+
+button.attacks {
+    /*background-color: Maroon;*/
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+button.defences {
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+

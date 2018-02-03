@@ -76,34 +76,40 @@ function getEventLocation(element,event){
         y: (event.pageY - pos.y)
     };
 }
+function init2DFloor() {
+    var canvas = document.getElementById('canvas');
+    canvas.width = 800;
+    canvas.height = 600;
+    var context = canvas.getContext('2d');
+    socket.on('state', function(players) {
+        context.clearRect(0, 0, 800, 600);
+        context.fillStyle = 'green';
+        for (var id in players) {
+            var player = players[id];
+            context.beginPath();
+            context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+            context.fill();
+        }
+    });
 
-var canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
-var context = canvas.getContext('2d');
-socket.on('state', function(players) {
-    context.clearRect(0, 0, 800, 600);
-    context.fillStyle = 'green';
-    for (var id in players) {
-        var player = players[id];
-        context.beginPath();
-        context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-        context.fill();
-    }
-});
+    canvas.addEventListener("click",function(event){
+        // Get the coordinates of the click
+        var eventLocation = getEventLocation(this,event);
+        // Get the data of the pixel according to the location generate by the getEventLocation function
+        var context = this.getContext('2d');
+        var pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
 
-canvas.addEventListener("click",function(event){
-    // Get the coordinates of the click
-    var eventLocation = getEventLocation(this,event);
-    // Get the data of the pixel according to the location generate by the getEventLocation function
-    var context = this.getContext('2d');
-    var pixelData = context.getImageData(eventLocation.x, eventLocation.y, 1, 1).data;
+        // If transparency on the pixel , array = [0,0,0,0]
+        if((pixelData[0] == 0) && (pixelData[1] == 0) && (pixelData[2] == 0) && (pixelData[3] == 0)){
+            socket.emit('moveclick', eventLocation);
+        }
 
-    // If transparency on the pixel , array = [0,0,0,0]
-    if((pixelData[0] == 0) && (pixelData[1] == 0) && (pixelData[2] == 0) && (pixelData[3] == 0)){
-        socket.emit('moveclick', eventLocation);
-    }
+        // Convert it to HEX if you want using the rgbToHex method.
+        // var hex = "#" + ("000000" + rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
+    },false);
+}
 
-    // Convert it to HEX if you want using the rgbToHex method.
-    // var hex = "#" + ("000000" + rgbToHex(pixelData[0], pixelData[1], pixelData[2])).slice(-6);
-},false);
+function setAction(e) {
+    var attackType = e.id;
+    socket.emit('battleAction', {type: attackType});
+}

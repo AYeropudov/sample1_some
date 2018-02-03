@@ -99,6 +99,8 @@ function  PlayerPrototype() {
     this.movement = false;
     this.nextx=0;
     this.nexty=0;
+    this.currentAttack = null;
+    this.currentDef = null;
     this.makemove = function () {
         var stopx = false;
         var stopy = false;
@@ -119,15 +121,40 @@ function  PlayerPrototype() {
         } else {
             stopy = true;
         }
-        console.log(this.x, this.y);
+        // console.log(this.x, this.y);
         if (stopy && stopx) {
             console.log("move end");
         } else {
             setTimeout(function () {
-                console.log('fire');
+                // console.log('fire');
                 _this.makemove();
             }, 1000/36);
         }
+    }
+    this.setAction = function (data) {
+        switch(data.type){
+            case 'a1':
+                this.currentAttack= 'Maroon';
+                break;
+            case 'a2':
+                this.currentAttack= 'Teal';
+                break;
+            case 'a3':
+                this.currentAttack= 'Olive';
+                break;
+            case 'd1':
+                this.currentDef= 'Navy';
+                break;
+            case 'd2':
+                this.currentDef= 'Purple';
+                break;
+            case 'd3':
+                this.currentDef= 'Orange';
+                break;
+            default:
+                break;
+        }
+
     }
 }
 io.on('connection', function(socket) {
@@ -156,8 +183,16 @@ io.on('connection', function(socket) {
         console.log('detect click');
         player.makemove();
     });
-});
+    socket.on('battleAction', function (data) {
+        console.log(data);
 
+    });
+    socket.on('disconnect', function () {
+        delete players[socket.id];
+        console.log('clent disconnected. remove him from state');
+        console.log(players);
+    });
+});
 setInterval(function() {
     io.sockets.emit('state', players);
 }, 1000 / 60);

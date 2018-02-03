@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  table
+    tr
+      td Player 1
+      td LOG
+      td Player 2
+    tr
+    tr
+      td
+        table(class="playersActions")
+          tr
+            td(colspan=3)
+              div
+                p ЧЕМ АТАКУЮ
+                p МОЯ ЗАЩИТА
+          tr
+            td
+              button(type='button' style='background-color: Maroon; color:white' class='attacks' id='a1' onclick="setAction(this)") attack1
+            td
+              button(type='button' style='background-color: Teal; color:white' class='attacks' id='a2') attack2
+            td
+              button(type='button' style='background-color: Olive; color:white' class='attacks' id='a3') attack3
+          tr
+            td
+              button(type='button' style='background-color: Navy; color:white' class='defences' id='d1') defence1
+            td
+              button(type='button' style='background-color: Purple; color:white' class='defences' id='d2') defence2
+            td
+              button(type='button' style='background-color: Orange; color:white' class='defences'  id='d3') defence3
+      td
+        div(style="vertical-align:top")
+          p TIMER
+      td
+        table(class="playersActions")
+          tr
+            td attack1
+            td attack2
+            td attack3
+          tr
+            td defence1
+            td defence2
+            td defence3
