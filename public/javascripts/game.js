@@ -3,6 +3,7 @@ socket.on('message', function(data) {
     console.log(data);
 });
 //###################################################
+//###################################################
 var movement = {
     up: false,
     down: false,
@@ -11,7 +12,7 @@ var movement = {
 }
 document.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
-        case 65: // A
+        case 65: //
             movement.left = true;
             break;
         case 87: // W
@@ -113,3 +114,7 @@ function setAction(e) {
     var attackType = e.id;
     socket.emit('battleAction', {type: attackType});
 }
+
+socket.on('actionConfirm', function (data) {
+    console.log(data);
+});
